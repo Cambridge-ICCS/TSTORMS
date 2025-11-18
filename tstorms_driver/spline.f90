@@ -2,17 +2,17 @@
 !-----------------------------------------------------------------------
 ! --- SUBROUTINE SPLIE2
 ! --- SUBROUTINE SPLIE3
-! --- SUBROUTINE SPLINE 
-! --- SUBROUTINE SPLINT   
-! --- SUBROUTINE SPLIN2   
-! --- SUBROUTINE SPLIN3   
-! --- SUBROUTINE FRPRM    
-! --- SUBROUTINE LINMIN     
-! --- SUBROUTINE LINMIN1     
-! --- SUBROUTINE F1D1M     
-! --- SUBROUTINE MNBRAK    
-! --- SUBROUTINE BRENT    
-! --- SUBROUTINE SHAPE    
+! --- SUBROUTINE SPLINE
+! --- SUBROUTINE SPLINT
+! --- SUBROUTINE SPLIN2
+! --- SUBROUTINE SPLIN3
+! --- SUBROUTINE FRPRM
+! --- SUBROUTINE LINMIN
+! --- SUBROUTINE LINMIN1
+! --- SUBROUTINE F1D1M
+! --- SUBROUTINE MNBRAK
+! --- SUBROUTINE BRENT
+! --- SUBROUTINE SHAPE
 !-----------------------------------------------------------------------
   implicit none
 
@@ -25,19 +25,19 @@
 
   SUBROUTINE SPLIE2( x1a, x2a, ya, y2a )
 !-----------------------------------------------------------------------
-! Given an M by N tabulated function YA and tabulated independant 
+! Given an M by N tabulated function YA and tabulated independant
 ! variables X1A (M values) and X2A (N values), this routine constructs
-! one-dimensional natural cubic splines of the rows and returns 
+! one-dimensional natural cubic splines of the rows and returns
 ! the second-derivatives in the array Y2A.
 !-----------------------------------------------------------------------
   implicit none
 
   real, intent(in),  dimension(:)   :: x1a   ! ===> NOT REFERENCED
-  real, intent(in),  dimension(:)   :: x2a   
-  real, intent(in),  dimension(:,:) :: ya   
-  real, intent(out), dimension(:,:) :: y2a   
+  real, intent(in),  dimension(:)   :: x2a
+  real, intent(in),  dimension(:,:) :: ya
+  real, intent(out), dimension(:,:) :: y2a
 
-  real,  dimension(SIZE(ya,2)) :: ytmp, y2tmp   
+  real,  dimension(SIZE(ya,2)) :: ytmp, y2tmp
   integer                      :: m, n, j
 
   real, parameter :: ypval = 1.e30
@@ -73,12 +73,12 @@
 !-----------------------------------------------------------------------
   implicit none
 
-  real, intent(in),  dimension(:)   :: x1a 
-  real, intent(in),  dimension(:)   :: x2a   ! ===> NOT REFERENCED   
-  real, intent(in),  dimension(:,:) :: ya   
-  real, intent(out), dimension(:,:) :: y2a   
+  real, intent(in),  dimension(:)   :: x1a
+  real, intent(in),  dimension(:)   :: x2a   ! ===> NOT REFERENCED
+  real, intent(in),  dimension(:,:) :: ya
+  real, intent(out), dimension(:,:) :: y2a
 
-  real,  dimension(SIZE(ya,1)) :: ytmp, y2tmp   
+  real,  dimension(SIZE(ya,1)) :: ytmp, y2tmp
   integer                      :: m, n, k
 
   real, parameter :: ypval = 1.e30
@@ -108,23 +108,23 @@
 
   SUBROUTINE SPLINE( x, y, yp1, ypn, y2 )
 !-----------------------------------------------------------------------
-! Given arrays X and Y of lenght N containing a tabulated function,i.e. 
+! Given arrays X and Y of lenght N containing a tabulated function,i.e.
 ! Yi = f(Xi), with X1<X2<...<Xn, and given values YP1 and YPN for the
-! first derivative of the interpolating function at points 1 and N, 
+! first derivative of the interpolating function at points 1 and N,
 ! respectively, this routine returns an array Y2 of length N which
 ! contains the second derivatives of the interpolating function
 ! of the tabulated points Xi.
-! If YP1 and/or YPN are equal to 1.E30 or larger, the routine 
+! If YP1 and/or YPN are equal to 1.E30 or larger, the routine
 ! is signalled to set the corresponding boundary  condition
 ! for a natural spline, wuth zero derivative on that boundary.
 !-----------------------------------------------------------------------
   implicit none
 
-  real, intent(in)                :: yp1, ypn 
-  real, intent(in),  dimension(:) :: x,   y 
+  real, intent(in)                :: yp1, ypn
+  real, intent(in),  dimension(:) :: x,   y
   real, intent(out), dimension(:) :: y2
 
-  real, dimension(SIZE(x)) :: u,  sig, p  
+  real, dimension(SIZE(x)) :: u,  sig, p
   real                     :: qn, un
   integer                  :: n,  i
 
@@ -184,9 +184,9 @@
 !-----------------------------------------------------------------------
   implicit none
 
-  real, intent(in),  dimension(:) :: xa, ya, y2a 
+  real, intent(in),  dimension(:) :: xa, ya, y2a
   real, intent(in)                :: x
-  real, intent(out)               :: y,  dy, dyy 
+  real, intent(out)               :: y,  dy, dyy
 
   integer :: n, k, klo, khi
   real    :: h, a, b,   ddy
@@ -233,7 +233,7 @@
 
   SUBROUTINE SPLIN2( x1a, x2a, ya, y2a, x1, x2, y, dy, ddy )
 !-----------------------------------------------------------------------
-! Given X1A, X2A, YA, M, N as described in SPLIE2 and Y2A as produced 
+! Given X1A, X2A, YA, M, N as described in SPLIE2 and Y2A as produced
 ! by that routine; and given a desired interpolating point X1, X2;
 ! this routine returns an interpolated function value Y by bicubic
 ! spline interpolation
@@ -243,10 +243,10 @@
   real, intent(in)                 :: x1,  x2
   real, intent(in), dimension(:)   :: x1a, x2a
   real, intent(in), dimension(:,:) :: ya,  y2a
-  real, intent(out)                :: y,   dy, ddy 
+  real, intent(out)                :: y,   dy, ddy
 
-  real, dimension(SIZE(ya,2)) :: ytmp, y2tmp  
-  real, dimension(SIZE(ya,1)) :: yytmp, yy2tmp   
+  real, dimension(SIZE(ya,2)) :: ytmp, y2tmp
+  real, dimension(SIZE(ya,1)) :: yytmp, yy2tmp
 
   real    :: y1, y2
   integer :: m,  n, j
@@ -281,7 +281,7 @@
 
   SUBROUTINE SPLIN3( x1a, x2a, ya, y2a, x1, x2, y, dy, ddy )
 !-----------------------------------------------------------------------
-! Given X1A, X2A, YA, M, N as described in SPLIE2 and Y2A as produced 
+! Given X1A, X2A, YA, M, N as described in SPLIE2 and Y2A as produced
 ! by that routine; and given a desired interpolating point X1, X2;
 ! this routine returns an interpolated function value Y by bicubic
 ! spline interpolation
@@ -291,10 +291,10 @@
   real, intent(in)                 :: x1,  x2
   real, intent(in), dimension(:)   :: x1a, x2a
   real, intent(in), dimension(:,:) :: ya,  y2a
-  real, intent(out)                :: y,   dy, ddy 
+  real, intent(out)                :: y,   dy, ddy
 
-  real, dimension(SIZE(ya,1)) :: ytmp,  y2tmp  
-  real, dimension(SIZE(ya,2)) :: yytmp, yy2tmp   
+  real, dimension(SIZE(ya,1)) :: ytmp,  y2tmp
+  real, dimension(SIZE(ya,2)) :: yytmp, yy2tmp
 
   real    :: y1, y2
   integer :: m,  n, k
@@ -337,7 +337,7 @@
 ! that were performed), and FRET(the minimum value of the function).
 ! The routine LINMIN is called to perform line minimizations.
 ! Maximum anticipated value of N; maximum allowed number of iterations;
-! small number to rectify special case of converging to exactly zero 
+! small number to rectify special case of converging to exactly zero
 ! function value
 !-----------------------------------------------------------------------
   implicit none
@@ -657,7 +657,7 @@
 ! u    = bx - ( ( bx - cx ) * q - ( bx - ax ) * r ) /  &
 !        ( 2.0 * SIGN( MAX( ABS( q - r ), tiny ), q - r ) )
 
-  uxt  = ( bx - cx ) * q - ( bx - ax ) * r 
+  uxt  = ( bx - cx ) * q - ( bx - ax ) * r
   uxb  =  2.0 * SIGN( MAX( ABS( q - r ), tiny ), q - r )
   u    = bx - uxt / uxb
   u    = MIN( cx + gold * ( cx - bx ), u )
@@ -691,7 +691,7 @@
      fb = fc
      fc = fu
      CALL F1D1M( fu, u, x1a, x2a, ya, y2a )
-  endif  
+  endif
 ! ---------------------------------------------------------
   else if( ( ( u - ulim ) * ( ulim - cx ) ) >= 0.0 ) then
 ! ---------------------------------------------------------
@@ -871,15 +871,15 @@
 ! that were performed), and FRET(the minimum value of the function).
 ! The routine LINMIN1 is called to perform line minimizations.
 ! Maximum anticipated value of N; maximum allowed number of iterations;
-! small number to rectify special case of converging to exactly zero 
+! small number to rectify special case of converging to exactly zero
 ! function value.
 !-----------------------------------------------------------------------
   implicit none
 
-  real,    intent(in),  dimension(:)   :: x1a, x2a, p 
-  real,    intent(in),  dimension(:,:) :: ya,  y2a, y3a    
-  real,    intent(in)                  :: val         
-  integer, intent(inout)               :: ierror2         
+  real,    intent(in),  dimension(:)   :: x1a, x2a, p
+  real,    intent(in),  dimension(:,:) :: ya,  y2a, y3a
+  real,    intent(in)                  :: val
+  integer, intent(inout)               :: ierror2
 
   real,    intent(in)  :: ftol         ! ===> NOT REFERENCED
   integer, intent(out) :: iter         ! ===> NOT REFERENCED
@@ -891,8 +891,8 @@
   integer :: l,  m, n, i, ier
   real    :: dr, fret1
 
- real, dimension(8) :: xi1 = (/ 0.,  0., 1., -1.,  1., 1., -1., -1. /)
- real, dimension(8) :: xi2 = (/ 1., -1., 0.,  0., -1., 1.,  1., -1. /)
+ real, dimension(8), parameter :: xi1 = [ 0.,  0., 1., -1.,  1., 1., -1., -1. ]
+ real, dimension(8), parameter :: xi2 = [ 1., -1., 0.,  0., -1., 1.,  1., -1. ]
 
 !-----------------------------------------------------------------------
 
@@ -912,12 +912,12 @@
         xi(1) = xi1(i)
         xi(2) = xi2(i)
   CALL LINMIN1( q, xi, fret1, x1a, x2a, ta, t2a, ier, val )
-        dr = ( p(1) - q(1) )**2 + ( p(2) - q(2) )**2 
+        dr = ( p(1) - q(1) )**2 + ( p(2) - q(2) )**2
     if( dr >= 100.0 ) ierror2 = 1
     if( ier == 1    ) ierror2 = 1
   end if
 ! %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  end do 
+  end do
 
 !-----------------------------------------------------------------------
   end SUBROUTINE SHAPE

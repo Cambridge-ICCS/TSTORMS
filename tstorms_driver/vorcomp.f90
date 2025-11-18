@@ -11,7 +11,7 @@ subroutine set_dx_dy( rlat, rlon )
 
 real, intent(in),  dimension(:) :: rlat, rlon
 
- real, parameter :: radius = 6371.0e3 
+ real, parameter :: radius = 6371.0e3
  real            :: PI, RADIAN
  real            :: dlon
  integer         :: j

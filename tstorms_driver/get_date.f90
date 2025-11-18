@@ -76,10 +76,10 @@ contains
    type(time_type)              :: Time
 
    integer :: nc
-   real    :: dfac 
+   real    :: dfac
 
 !---- convert time_since to time_type ----
-!---- valid time units are: seconds,minutes,hours,days ----- 
+!---- valid time units are: seconds,minutes,hours,days -----
 
       nc = len_trim(units)
 
@@ -112,7 +112,7 @@ contains
    integer :: hour
 
 !---- convert time_since to time_type ----
-!---- valid time units are: seconds,minutes,hours,days ----- 
+!---- valid time units are: seconds,minutes,hours,days -----
 
       nc = len_trim(units)
 
@@ -184,7 +184,7 @@ contains
     call increment_date (units, time_since, idate, date)
 
  end subroutine current_date
- 
+
 !#######################################################################
 
  subroutine set_cal (cal)

@@ -50,7 +50,7 @@
 !-------------------------------------------------------------------
 
   CALL GET_DATA( n, wind, vor, tbar, psl, thick, year, month, day, hour )
-  if (year .lt. 100) year=year+1980
+  if (year < 100) year=year+1980
 
   print *, '   '
   print *, ' year, month, day, hour = ', year, month, day, hour

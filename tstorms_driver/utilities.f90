@@ -8,10 +8,10 @@ module utilities_mod
 !      file_exist       Function that returns if a given
 !                       file name exists
 !
-!      get_unit         Function that returns an available 
+!      get_unit         Function that returns an available
 !                       Fortran unit number
 !
-!      error_mesg       Print warning and error messages, 
+!      error_mesg       Print warning and error messages,
 !                       terminates program for error messages.
 !
 !      check_nml_error  Checks the iostat returned when reading
@@ -43,7 +43,7 @@ contains
    function file_exist (file_name)
 
       character(len=*), intent(in) :: file_name
-      logical  file_exist
+      logical  :: file_exist
 
       inquire (file=file_name(1:len_trim(file_name)), exist=file_exist)
 
@@ -53,8 +53,8 @@ contains
 
    function get_unit () result (unit)
 
-      integer  i, unit
-      logical  open
+      integer  :: i, unit
+      logical  :: open
 
 ! ---- get available unit ----
 
@@ -117,7 +117,7 @@ function check_nml_error (iostat, nml_name) result (error_code)
 
    integer,          intent(in) :: iostat
    character(len=*), intent(in) :: nml_name
-   integer   error_code, i
+   integer   :: error_code, i
    character(len=128) :: err_str
 
    if (do_nml_error_init) call nml_error_init
@@ -143,7 +143,7 @@ subroutine nml_error_init
 
 !   private routine for initializing allowable error codes
 
-   integer  unit, io, ir
+   integer  :: unit, io, ir
    real ::  b=1.
    namelist /b_nml/  b
 
@@ -210,7 +210,7 @@ end subroutine nml_error_init
     !                       'unexpected format returned by inquire', 2)
     !        endif
     !    endif
-         
+
      else
 ! ---------- open file ----------
 

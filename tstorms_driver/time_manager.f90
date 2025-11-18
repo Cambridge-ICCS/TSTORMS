@@ -5,19 +5,19 @@ implicit none
 private
 
 !====================================================================
-! The time_manager provides a single defined type, time_type, which is 
-! used to store time and date quantities. A time_type is a positive 
-! definite quantity that represents an interval of time. It can be most 
-! easily thought of as representing the number of seconds in some time 
-! interval. A time interval can be mapped to a date under a given calendar 
-! definition by using it to represent the time that has passed since some 
-! base date. A number of interfaces are provided to operate on time_type 
-! variables and their associated calendars. Time intervals can be as large 
-! as n days where n is the largest number represented by the default integer 
-! type on a compiler. This is typically considerably greater than 10 million 
-! years which is likely to be adequate for most applications. The 
-! description of the interfaces is separated into two sections. The first 
-! deals with operations on time intervals while the second deals with 
+! The time_manager provides a single defined type, time_type, which is
+! used to store time and date quantities. A time_type is a positive
+! definite quantity that represents an interval of time. It can be most
+! easily thought of as representing the number of seconds in some time
+! interval. A time interval can be mapped to a date under a given calendar
+! definition by using it to represent the time that has passed since some
+! base date. A number of interfaces are provided to operate on time_type
+! variables and their associated calendars. Time intervals can be as large
+! as n days where n is the largest number represented by the default integer
+! type on a compiler. This is typically considerably greater than 10 million
+! years which is likely to be adequate for most applications. The
+! description of the interfaces is separated into two sections. The first
+! deals with operations on time intervals while the second deals with
 ! operations that convert time intervals to dates for a given calendar.
 !
 !====================================================================
@@ -66,7 +66,7 @@ integer, parameter :: THIRTY_DAY_MONTHS = 1,      JULIAN = 2, &
 integer, private :: calendar_type = NO_CALENDAR, max_type = 4
 
 ! Define number of days per month
-integer, private :: days_per_month(12) = (/31,28,31,30,31,30,31,31,30,31,30,31/)
+integer, private :: days_per_month(12) = [31,28,31,30,31,30,31,31,30,31,30,31]
 
 ! time_type is implemented as seconds and days to allow for larger intervals
 type time_type
@@ -79,7 +79,7 @@ end type time_type
 
 interface operator (+);   module procedure time_plus;        end interface
 interface operator (-);   module procedure time_minus;       end interface
-interface operator (*);   module procedure time_scalar_mult 
+interface operator (*);   module procedure time_scalar_mult
                           module procedure scalar_time_mult; end interface
 interface operator (/);   module procedure time_scalar_divide
                           module procedure time_divide;      end interface
@@ -308,7 +308,7 @@ end function time_plus
 
 function time_minus(time1, time2)
 
-! Returns difference of two time_types. WARNING: a time type is positive 
+! Returns difference of two time_types. WARNING: a time type is positive
 ! so by definition time1 - time2  is the same as time2 - time1.
 
 implicit none
@@ -318,7 +318,7 @@ type(time_type), intent(in) :: time1, time2
 
 if(time1 > time2) then
    time_minus = decrement_time(time1, time2%seconds, time2%days)
-else 
+else
    time_minus = decrement_time(time2, time1%seconds, time1%days)
 endif
 
@@ -336,7 +336,7 @@ type(time_type) :: time_scalar_mult
 type(time_type), intent(in) :: time
 integer, intent(in) :: n
 integer :: days, seconds
-double precision :: sec_prod 
+double precision :: sec_prod
 
 ! Multiplying here in a reasonable fashion to avoid overflow is tricky
 ! Could multiply by some large factor n, and seconds could be up to 86399
@@ -387,7 +387,7 @@ double precision :: d1, d2
 
 ! Convert time intervals to floating point days; risky for general performance?
 d1 = time1%days * dble(60. * 60. * 24.) + dble(time1%seconds)
-d2 = time2%days * dble(60. * 60. * 24.) + dble(time2%seconds) 
+d2 = time2%days * dble(60. * 60. * 24.) + dble(time2%seconds)
 
 ! Get integer quotient of this, check carefully to avoid round-off problems.
 time_divide = d1 / d2
@@ -412,7 +412,7 @@ double precision :: d1, d2
 
 ! Convert time intervals to floating point days; risky for general performance?
 d1 = time1%days * dble(60. * 60. * 24.) + dble(time1%seconds)
-d2 = time2%days * dble(60. * 60. * 24.) + dble(time2%seconds) 
+d2 = time2%days * dble(60. * 60. * 24.) + dble(time2%seconds)
 
 time_real_divide = d1 / d2
 
@@ -443,7 +443,7 @@ time_scalar_divide = set_time(seconds, days)
 
 ! Need to make sure that roundoff isn't killing this
 prod1 = n * time_scalar_divide
-prod2 = n * (increment_time(time_scalar_divide, 1, 0)) 
+prod2 = n * (increment_time(time_scalar_divide, 1, 0))
 if(prod1 > time .or. prod2 <= time) &
    call error_handler('time_scalar_divide quotient error :: notify developer')
 
@@ -458,7 +458,7 @@ implicit none
 ! Supports a commonly used type of test on times for models.  Given the
 ! current time, and a time for an alarm, determines if this is the closest
 ! time to the alarm time given a time step of time_interval.  If this
-! is the closest time (alarm - time <= time_interval/2), the function 
+! is the closest time (alarm - time <= time_interval/2), the function
 ! returns true and the alarm is incremented by the alarm_interval.  Watch
 ! for problems if the new alarm time is less than time + time_interval
 
@@ -484,8 +484,8 @@ implicit none
 ! Repeat_alarm supports an alarm that goes off with alarm_frequency and
 ! lasts for alarm_length.  If the nearest occurence of an alarm time
 ! is less than half an alarm_length from the input time, repeat_alarm
-! is true.  For instance, if the alarm_frequency is 1 day, and the 
-! alarm_length is 2 hours, then repeat_alarm is true from time 2300 on 
+! is true.  For instance, if the alarm_frequency is 1 day, and the
+! alarm_length is 2 hours, then repeat_alarm is true from time 2300 on
 ! day n to time 0100 on day n + 1 for all n.
 
 logical :: repeat_alarm
@@ -510,7 +510,7 @@ end function repeat_alarm
 
 subroutine set_calendar_type(type)
 
-! Selects calendar for default mapping from time to date. 
+! Selects calendar for default mapping from time to date.
 
 implicit none
 
@@ -576,7 +576,7 @@ implicit none
 type(time_type), intent(in) :: time
 integer, intent(out) :: second, minute, hour, day, month, year
 integer :: m,t,dyear,dmonth,dday,nday,nleapyr,nfh,nhund,nfour
-integer ndiy,nex,ibaseyr
+integer :: ndiy,nex,ibaseyr
 logical :: leap
 
 ibaseyr= 1601
@@ -591,7 +591,7 @@ nfh=nday/146097
 nday=modulo(nday,146097)
 ! find number of hundred year periods
 nhund= nday/36524
-if(nhund.gt.3) then
+if(nhund>3) then
   nhund=3
   nday=36524
 else
@@ -601,7 +601,7 @@ endif
 nfour=nday/1461
 nday=modulo(nday,1461)
 nex=nday/365
-if(nex.gt.3) then
+if(nex>3) then
  nex=3
  nday=365
 else
@@ -610,7 +610,7 @@ endif
 ! Is this a leap year? Gregorian calandar assigns each year evenly
 ! divisible by 4 that is not a century year unevenly divisible by 400
 ! as a leap-year. (i.e. 1700,1800,1900 are not leap-years, 2000 is)
-leap=(nex.eq.3).and.((nfour.ne.24).or.(nhund.eq.3))
+leap=(nex==3).and.((nfour/=24).or.(nhund==3))
  if (leap) then
   ndiy=366
  else
@@ -618,11 +618,11 @@ leap=(nex.eq.3).and.((nfour.ne.24).or.(nhund.eq.3))
  endif
 year=ibaseyr+400*nfh+100*nhund+4*nfour+nex
 nday=nday+1
-! find month 
+! find month
 month=0
 do m=1,12
- if (leap.and.(m.eq.2)) then
-  if (nday.le. (days_per_month(2)+1)) then
+ if (leap.and.(m==2)) then
+  if (nday<= (days_per_month(2)+1)) then
    month = m
    go to 10
   else
@@ -630,8 +630,8 @@ do m=1,12
    month = m
    t = t -  (60*60*24 * (days_per_month(2)+1))
   endif
- else 
-  if (nday.le. days_per_month(m)) then
+ else
+  if (nday<= days_per_month(m)) then
    month = m
    go to 10
   else
@@ -659,7 +659,7 @@ end subroutine get_date_gregorian
 
 subroutine get_date_julian(time, year, month, day, hour, minute, second)
 
-! Base date for Julian calendar is year 1 with all multiples of 4 
+! Base date for Julian calendar is year 1 with all multiples of 4
 ! years being leap years.
 
 implicit none
@@ -671,7 +671,7 @@ integer :: m, t, nfour, nex, days_this_month
 logical :: leap
 
 ! find number of four year periods; also get modulo number of days
-nfour = time%days / (4 * 365 + 1) 
+nfour = time%days / (4 * 365 + 1)
 day = modulo(time%days, (4 * 365 + 1))
 
 ! Find out what year in four year chunk
@@ -683,7 +683,7 @@ else
    day=modulo(day, 365) + 1
 endif
 
-! Is this a leap year? 
+! Is this a leap year?
 leap = (nex == 3)
 
 year = 1 + 4 * nfour + nex
@@ -728,7 +728,7 @@ month = 1 + dmonth
 day = t -dmonth * 30 + 1
 
 t = time%seconds
-hour = t / (60 * 60) 
+hour = t / (60 * 60)
 t = t - hour * (60 * 60)
 minute = t / 60
 second = t - 60 * minute
@@ -815,8 +815,8 @@ type(time_type) :: set_date_gregorian
 integer, intent(in) :: day, month, year
 integer, intent(in), optional :: seconds, minutes, hours
 integer :: oseconds, ominutes, ohours
-integer days, m, nleapyr
-integer :: base_year = 1900
+integer :: days, m, nleapyr
+integer, parameter :: base_year = 1900
 logical :: leap
 
 ! Missing optionals are set to 0
@@ -825,16 +825,16 @@ ominutes = 0; if(present(minutes)) ominutes = minutes
 ohours = 0; if(present(hours)) ohours = hours
 
 ! Need to check for bogus dates
-if(oseconds .gt. 59 .or. oseconds .lt. 0 .or. ominutes .gt. 59 .or. ominutes .lt. 0 &
-   .or. ohours .gt. 23 .or. ohours .lt. 0 .or. day .gt. 31 .or. day .lt. 1 &
-        .or. month .gt. 12 .or. month .lt. 1 .or. year .lt. base_year) &
+if(oseconds > 59 .or. oseconds < 0 .or. ominutes > 59 .or. ominutes < 0 &
+   .or. ohours > 23 .or. ohours < 0 .or. day > 31 .or. day < 1 &
+        .or. month > 12 .or. month < 1 .or. year < base_year) &
       call error_handler('Invalid date in set_date_gregorian')
 
 ! Is this a leap year? Gregorian calandar assigns each year evenly
 ! divisible by 4 that is not a century year unevenly divisible by 400
 ! as a leap-year. (i.e. 1700,1800,1900 are not leap-years, 2000 is)
-  leap=(modulo(year,4).eq.0)
-  if((modulo(year,100).eq.0).and.(modulo(year,400).ne.0))then
+  leap=(modulo(year,4)==0)
+  if((modulo(year,100)==0).and.(modulo(year,400)/=0))then
    leap=.false.
   endif
 ! compute number of leap years from base_year
@@ -842,7 +842,7 @@ nleapyr=((year-1)-base_year)/4-((year-1)-base_year)/100+((year-1)-1600)/400
 days = 0
 do m=1,month-1
  days = days + days_per_month(m)
- if(leap.and.m.eq.2)days=days+1
+ if(leap.and.m==2)days=days+1
 enddo
 set_date_gregorian%seconds = oseconds + 60*(ominutes + 60*(ohours + 24*((day - 1) + &
         (days + 365*(year - base_year-nleapyr)+366*(nleapyr)))))
@@ -861,7 +861,7 @@ type(time_type) :: set_date_julian
 integer, intent(in) :: day, month, year
 integer, intent(in), optional :: seconds, minutes, hours
 integer :: oseconds, ominutes, ohours
-integer ndays, m, nleapyr
+integer :: ndays, m, nleapyr
 logical :: leap
 
 ! Missing optionals are set to 0
@@ -877,7 +877,7 @@ if(oseconds > 59 .or. oseconds < 0 .or. ominutes > 59 .or. ominutes < 0 &
 if(month /= 2 .and. day > days_per_month(month)) &
    call error_handler('Invalid day in set_date_julian')
 
-! Is this a leap year? 
+! Is this a leap year?
 leap = (modulo(year,4) == 0)
 ! compute number of complete leap years from year 1
 nleapyr = (year - 1) / 4
@@ -938,7 +938,7 @@ type(time_type) :: set_date_no_leap
 integer, intent(in) :: day, month, year
 integer, intent(in), optional :: seconds, minutes, hours
 integer :: oseconds, ominutes, ohours
-integer ndays, m
+integer :: ndays, m
 
 ! Missing optionals are set to 0
 oseconds = 0; if(present(seconds)) oseconds = seconds
@@ -1094,7 +1094,7 @@ cmonth = cmonth + omonths
 cyear = cyear + oyears
 ! Check for months larger than 12 and fix
 if(cmonth > 12) then
-   dyear = (cmonth - 1) / 12 
+   dyear = (cmonth - 1) / 12
    cmonth = cmonth - 12 * dyear
    cyear = cyear + dyear
 end if
@@ -1185,7 +1185,7 @@ cmonth = cmonth + omonths
 cyear = cyear + oyears
 ! Check for months larger than 12 and fix
 if(cmonth > 12) then
-   dyear = (cmonth - 1) / 12 
+   dyear = (cmonth - 1) / 12
    cmonth = cmonth - 12 * dyear
    cyear = cyear + dyear
 end if
@@ -1593,7 +1593,7 @@ end function leap_year_julian
 
 function leap_year_thirty(time)
 
-! No leap years in thirty day months, included for transparency. 
+! No leap years in thirty day months, included for transparency.
 
 implicit none
 
@@ -1798,9 +1798,9 @@ function month_name(n)
 
 character (len=9) :: month_name
 integer, intent(in) :: n
-character (len = 9), dimension(12) :: months = (/'January  ', 'February ', &
+character (len = 9), dimension(12), parameter :: months = ['January  ', 'February ', &
           'March    ', 'April    ', 'May      ', 'June     ', 'July     ', &
-          'August   ', 'September', 'October  ', 'November ', 'December '/) 
+          'August   ', 'September', 'October  ', 'November ', 'December ']
 
 if(n < 1 .or. n > 12) call error_handler('Illegal month index')
 
