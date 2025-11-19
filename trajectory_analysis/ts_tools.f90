@@ -4,13 +4,14 @@
 
 !####################################################################
 
-  SUBROUTINE TS_FILTER (nlat, slat)
+  SUBROUTINE TS_FILTER (nlat, slat, landmask)
   implicit none
 
   real,    intent(in) ::  nlat, slat
 !------------------------------------------------------------------------
 ! --- for land mask
 !------------------------------------------------------------------------
+  character(len=120) :: landmask
   integer, parameter :: ix0 =   40
   integer, parameter :: iy0 = 1620
   integer, parameter ::  ix = 360
@@ -19,8 +20,6 @@
   real,    parameter :: tpi = 360.0
   real,    parameter :: hpi =  90.0
 
-  character(len=120) :: &
-  landmask = '/home/fms/local/opt/fre-analysis/test/keo/tropical_storms/trajectory_analysis/landsea.map'
 
   integer, dimension(ix0,iy0) :: mask0
   integer, dimension(ix, iy ) :: mask
@@ -135,13 +134,14 @@
 
 !####################################################################
 
-  SUBROUTINE TS_STATS ( do_filt )
+  SUBROUTINE TS_STATS ( do_filt, cmask )
 !===================================================================
 !  use regions_mod
   implicit none
 !-------------------------------------------------------------------
 
   logical, intent(in) :: do_filt
+  character(len=120) :: cmask
 
 !-------------------------------------------------------------------
   integer, parameter :: ix  =  360
@@ -158,9 +158,6 @@
 
   character(len=2), dimension(ireg) :: bx
   data bx /' G','WA','EA','WP','EP','NI','SI','AU','SP','SA','NH','SH'/
-
-  character(len=120) :: &
-  cmask = '/home/fms/local/opt/fre-analysis/test/keo/tropical_storms/trajectory_analysis/imask_2'
 
 !-------------------------------------------------------------------
 

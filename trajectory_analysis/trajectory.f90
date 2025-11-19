@@ -64,9 +64,12 @@
   real     :: slat = -40. !miz
   logical  :: do_spline = .false.
   logical  :: do_thickness = .false.
+  character(len=120) :: landmask = '/home/fms/local/opt/fre-analysis/test/keo/tropical_storms/trajectory_analysis/landsea.map'
+  character(len=120) :: cmask = '/home/fms/local/opt/fre-analysis/test/keo/tropical_storms/trajectory_analysis/imask_2'
 
   namelist / input /  rcrit, wcrit, wcritm, nwcrit, do_filt, &
-       vcrit, twc_crit, thick_crit, nlat, slat, do_spline, do_thickness !miz
+       vcrit, twc_crit, thick_crit, nlat, slat, do_spline, do_thickness, &
+       landmask, cmask
 
 !===================================================================
 
@@ -429,13 +432,13 @@
 ! --- FILTER DATA
 !===================================================================
 
-  if( do_filt ) CALL TS_FILTER(nlat,slat)
+  if( do_filt ) CALL TS_FILTER(nlat,slat,landmask)
 
 !===================================================================
 ! --- STATS
 !===================================================================
 
-  CALL TS_STATS ( do_filt )
+  CALL TS_STATS ( do_filt, cmask )
 
 !===================================================================
   end PROGRAM TRAJECTORY
