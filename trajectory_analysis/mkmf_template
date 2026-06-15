@@ -1,15 +1,12 @@
 CPPFLAGS = -I/usr/local/include
-FFLAGS = $(CPPFLAGS) $(shell nf-config --fflags)
+FFLAGS = $(CPPFLAGS) $(shell nf-config --fflags) -O2
 
 FC = ifort # Default compiler
 LD = $(FC)
 
 ifeq ($(FC),gfortran)
-    FFLAGS += -g -O2 -fcommon
     LDFLAGS = -lm -lpthread -lrt $(shell nf-config --flibs)
-    CFLAGS = -D__GFORTRAN
 else
-    FFLAGS += -fp-model strict -stack-temps -safe-cray-ptr -ftz -shared-intel -assume byterecl -g -i4 -r8 -O2 -nowarn -Wp,-w
+    FFLAGS += -fp-model strict -stack-temps -safe-cray-ptr -ftz -shared-intel -assume byterecl -i4 -r8 -nowarn -Wp,-w
     LDFLAGS = -limf -lm -lpthread -lrt $(shell nf-config --flibs)
-    CFLAGS = -D__IFC
 endif
