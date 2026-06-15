@@ -9,7 +9,7 @@ ifeq ($(FC),gfortran)
     LDFLAGS = -lm -lpthread -lrt $(shell nf-config --flibs) -lhdf5 -lhdf5_hl
     CFLAGS = -D__GFORTRAN
 else
-    FFLAGS += -fltconsistency -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4 -r8 -O2 -nowarn -Wp,-w
+    FFLAGS += -fltconsistency -stack-temps -safe-cray-ptr -ftz -shared-intel -assume byterecl -g -i4 -r8 -O2 -nowarn -Wp,-w
     LDFLAGS = -limf -lm -lpthread -lrt $(shell nf-config --flibs) -lhdf5 -lhdf5_hl
     CFLAGS = -D__IFC
 endif
