@@ -203,6 +203,9 @@ contains
      else if (cal(1:6) == 'NOLEAP') then
                call set_calendar_type (NO_LEAP)
 
+     else if (cal(1:7) == '360_day') then
+               call set_calendar_type (THIRTY_DAY_MONTHS)
+
      else
 !              call set_calendar_type (THIRTY_DAY_MONTHS)
                call set_calendar_type (NO_LEAP)
