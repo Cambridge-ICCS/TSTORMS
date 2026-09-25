@@ -196,11 +196,15 @@ contains
         cal(1:6) == 'JULIAN'    .or.  &
         cal(1:9) == 'Gregorian' .or.  &
         cal(1:9) == 'gregorian' .or.  &
-        cal(1:9) == 'GREGORIAN' ) then
+        cal(1:9) == 'GREGORIAN' .or.  &
+        cal(1:8) == 'standard'  .or.  &
+        cal(1:19) == 'proleptic_gregorian' ) then
                call set_calendar_type (JULIAN)
 
 !    else if (cal(1:6) == 'common') then
-     else if (cal(1:6) == 'NOLEAP') then
+     else if (cal(1:6) == 'NOLEAP' .or.  &
+              cal(1:6) == 'noleap' .or.  &
+              cal(1:7) == '365_day') then
                call set_calendar_type (NO_LEAP)
 
      else if (cal(1:7) == '360_day') then
