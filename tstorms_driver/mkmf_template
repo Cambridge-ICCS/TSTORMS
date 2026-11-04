@@ -4,7 +4,7 @@ FFLAGS = $(CPPFLAGS) $(shell nf-config --fflags) -O2
 FC = ifort # Default compiler
 LD = $(FC)
 
-ifeq ($(FC),gfortran)
+ifeq ($(strip $(FC)),gfortran)
     LDFLAGS = -lm -lpthread -lrt $(shell nf-config --flibs) -lhdf5 -lhdf5_hl
 else
     FFLAGS += -fltconsistency -stack-temps -safe-cray-ptr -ftz -shared-intel -assume byterecl -i4 -r8 -nowarn -Wp,-w
